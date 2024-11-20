@@ -1146,6 +1146,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "rusty-mail"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "dirs",
+ "html2text",
+ "imap",
+ "lettre",
+ "mailparse",
+ "native-tls",
+ "quoted_printable",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "ryu"
 version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1734,22 +1750,6 @@ dependencies = [
  "quote",
  "syn",
  "synstructure",
-]
-
-[[package]]
-name = "your_package_name"
-version = "0.1.0"
-dependencies = [
- "base64 0.22.1",
- "dirs",
- "html2text",
- "imap",
- "lettre",
- "mailparse",
- "native-tls",
- "quoted_printable",
- "serde",
- "serde_json",
 ]
 
 [[package]]

@@ -1,11 +1,11 @@
 [package]
-name = "your_package_name"
+name = "rusty-mail"
 version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0"
-description = "A CLI Gmail client built in Rust that uses a Gmail app password."
-homepage = "https://github.com/vibsthebot/remail"
-repository = "https://github.com/vibsthebot/remail"
+description = "A CLI Gmail client built in Rust"
+homepage = "https://github.com/vibsthebot/rusty-mail"
+repository = "https://github.com/vibsthebot/rusty-mail"
 readme = "README.md"
 
 [dependencies]
