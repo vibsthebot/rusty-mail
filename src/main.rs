@@ -131,6 +131,9 @@ fn read_emails() -> Result<(), Box<dyn std::error::Error>> {
                 println!("  <number>         - Go to specific page\n");
                 continue;
             }
+            "exit" | "e" => {
+                break;
+            }
             "fetch" | "f" => {
                 if args.len() < 1 {
                     println!("Usage: fetch <email number>");
