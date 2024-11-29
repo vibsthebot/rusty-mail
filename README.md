@@ -13,4 +13,5 @@ This project is a CLI application that allows you to interact with your Gmail ac
 - A [Gmail app password](https://support.google.com/mail/answer/185833?hl=en) for authentication
 
 ## Installation
-
+- Install cargo
+- run '''cargo install rusty-mail'''

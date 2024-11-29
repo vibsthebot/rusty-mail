@@ -99,22 +99,20 @@ fn read_emails() -> Result<(), Box<dyn std::error::Error>> {
                 println!("{} - {}", i + 1 + current_page * 8, subject);
             }
         }
-        print!("Enter 'next' for next page, a number to go to a page, or 'back': ");
-        io::stdout().flush()?;
 
+        // Existing code to get input
+        print!("Enter command: ");
+        io::stdout().flush()?;
         input.clear();
         io::stdin().read_line(&mut input)?;
         let input_trimmed = input.trim().to_lowercase();
 
-        if input_trimmed == "exit" || input_trimmed == "e" {
-            break;
-        }
+        // Split the input into command and arguments
+        let mut parts = input_trimmed.split_whitespace();
+        let command = parts.next().unwrap_or("");
+        let args: Vec<&str> = parts.collect();
 
-        if input_trimmed == "back" || input_trimmed == "b" {
-            break;
-        }
-
-        match input_trimmed.as_str() {
+        match command {
             "back" | "b" => {
                 if current_page > 0 {
                     current_page -= 1;
@@ -125,36 +123,49 @@ fn read_emails() -> Result<(), Box<dyn std::error::Error>> {
             }
             "help" | "h" | "" => {
                 println!("\nAvailable commands:");
-                println!("  next (n) - Show next page of emails");
-                println!("  back (b) - Show previous page of emails");
-                println!("  exit (e) - Return to main menu");
-                println!("  help (h) - Show this help");
-                println!("  <number> - Go to specific page\n");
+                println!("  next (n)         - Show next page of emails");
+                println!("  back (b)         - Show previous page of emails");
+                println!("  exit (e)         - Return to main menu");
+                println!("  help (h)         - Show this help");
+                println!("  fetch <number>   - Fetch and display the email with the given number");
+                println!("  <number>         - Go to specific page\n");
                 continue;
             }
             "fetch" | "f" => {
-                // Attempt to fetch the email with UID 1
-                match email_client.fetch_email(1) {
-                    Ok(email_content) => {
-                        println!("{}", email_content);
+                if args.len() < 1 {
+                    println!("Usage: fetch <email number>");
+                    continue;
+                }
+                match args[0].parse::<usize>() {
+                    Ok(num) => {
+                        // Adjust for zero-based index if necessary
+                        let index = num - 1;
+                        match email_client.fetch_email(index) {
+                            Ok(email_content) => {
+                                println!("{}", email_content);
+                            }
+                            Err(e) => {
+                                eprintln!("Error fetching email: {}", e);
+                            }
+                        }
                     }
-                    Err(e) => {
-                        eprintln!("Error fetching email: {}", e);
+                    Err(_) => {
+                        println!("Please provide a valid email number.");
+                        continue;
                     }
                 }
-
                 println!("Press Enter to continue...");
                 let mut input = String::new();
                 io::stdin().read_line(&mut input)?;
             }
-            _ => {
-                match input_trimmed.parse::<usize>() {
+            // Handle page number input
+            number => {
+                match number.parse::<usize>() {
                     Ok(page) if page > 0 => {
                         current_page = page - 1;
                     }
                     _ => {
-                        println!("Please enter a valid number, 'next', or 'back'");
-                        continue;
+                        println!("Unknown command. Type 'help' or 'h' for a list of commands.");
                     }
                 }
             }
